@@ -55,15 +55,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             NSStrokeWidthAttributeName: -5
         ]
         
-        topTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        
-        topTextField.textAlignment = .center
-        bottomTextField.textAlignment = .center
-        
-        topTextField.borderStyle = .none
-        bottomTextField.borderStyle = .none
-        
+        configure(textfield: topTextField, text: "TOP", defaultAttributes: memeTextAttributes)
+        configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: memeTextAttributes)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -71,30 +64,49 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         unsubscribeToKeyboardNotifications()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+    //    MARK: TextField UI
+    func configure(textfield: UITextField, text: String?, defaultAttributes: [String: Any]?) {
+        if let text = text {
+            textfield.text = text
+        }
+        
+        if let defaultAttributes = defaultAttributes {
+            textfield.defaultTextAttributes = defaultAttributes
+        }
+        
+        textfield.textAlignment = .center
+        textfield.borderStyle = .none
     }
     
 //    MARK: - IBAction
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
+        presentImagePickerWith(source: .photoLibrary)
+    }
+    
+    @IBAction func pickAnImageFromCamera(_ sender: Any) {
+        presentImagePickerWith(source: .camera)
+    }
+    
+    func presentImagePickerWith(source: UIImagePickerControllerSourceType) {
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
+        imagePicker.sourceType = source
         present(imagePicker, animated: true) {
             
         }
     }
     
-    @IBAction func pickAnImageFromCamera(_ sender: Any) {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .camera
-        present(imagePicker, animated: true, completion: nil)
-    }
-    
     @IBAction func shareAnImage(_ sender: Any) {
-        save()
+        memedImage = generateMemedImage()
+        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: originalImage!, memedImage: memedImage!)
+        
+        let vc = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: [])
+        vc.completionWithItemsHandler = { (_, successful,_,_) in
+            if successful {
+                self.save()
+            }
+        }
+        present(vc, animated: true, completion: nil)
     }
     
     
@@ -102,8 +114,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         shareButton.isEnabled = true
         cancelButton.isEnabled = true
         
-        topTextField.text = "TOP"
-        bottomTextField.text = "BOTTOM"
+        configure(textfield: topTextField, text: "TOP", defaultAttributes: nil)
+        configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: nil)
         originalImage = nil
         memedImage = nil
         memeImageView.image = nil
@@ -121,7 +133,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         if let image: UIImage = info["UIImagePickerControllerOriginalImage"] as? UIImage {
             memeImageView.image = image
             originalImage = image
-            
             shareButton.isEnabled = true
         }
         
@@ -172,12 +183,20 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 //    MARK: - Memed Image Save and Share
     func save() {
-        memedImage = generateMemedImage()
-        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: originalImage!, memedImage: memedImage!)
-        print ("meme - \(meme)")
-        
-        let vc = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: [])
-        present(vc, animated: true, completion: nil)
+        UIImageWriteToSavedPhotosAlbum((self.memedImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+    }
+    
+    func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+        if let error = error {
+            // we got back an error!
+            let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        } else {
+            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
+            ac.addAction(UIAlertAction(title: "OK", style: .default))
+            present(ac, animated: true)
+        }
     }
     
     func generateMemedImage() -> UIImage {
@@ -210,13 +229,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 //    MARK: - Transition Method
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        if UIDevice.current.orientation.isLandscape {
-            print("Landscape")
-            scrollViewOriginY = self.view.frame.origin.y
-        } else {
-            print("Portrait")
-            scrollViewOriginY = self.view.frame.origin.y
-        }
+        scrollViewOriginY = self.view.frame.origin.y
     }
 
 

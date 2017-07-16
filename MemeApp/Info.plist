@@ -38,5 +38,7 @@
 	<string>Test Message - Camera</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Test Message - Album</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>Add Images </string>
 </dict>
 </plist>
