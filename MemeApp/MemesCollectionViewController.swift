@@ -24,16 +24,6 @@ class MemesCollectionViewController: UICollectionViewController {
         
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem
-        
-        let space: CGFloat = 3.0
-        let dimension: CGFloat
-        
-        dimension = (self.view.frame.size.width - (2 * space)) / 3.0
-        
-        flowLayout.minimumInteritemSpacing = space
-        flowLayout.minimumLineSpacing = space
-        flowLayout.itemSize = CGSize.init(width: dimension, height: dimension)
-        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -42,6 +32,11 @@ class MemesCollectionViewController: UICollectionViewController {
         memes = appDelegate.memes
         collectionView?.reloadData()
         print("memes array: \(memes.memesData)")
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        collectionCellSize()
     }
 
     override func didReceiveMemoryWarning() {
@@ -83,36 +78,30 @@ class MemesCollectionViewController: UICollectionViewController {
     
         return cell
     }
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let meme = memes.memesData[indexPath.row]
+        
+        let detailVC = self.storyboard?.instantiateViewController(withIdentifier: "MemeDetailViewController") as! MemeDetailViewController
+        detailVC.meme = meme
+        self.navigationController?.pushViewController(detailVC, animated: true)
     }
-    */
+    
+    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+        collectionCellSize()
+        collectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func collectionCellSize() {
+        let space: CGFloat = 3.0
+        
+        let frameSize = collectionView?.frame.size
+        let shorterSide = min(frameSize!.height, frameSize!.width)
+        let dimension = (shorterSide - (2 * space)) / 3.0
+        
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        flowLayout.itemSize = CGSize.init(width: dimension, height: dimension)
+    }
 
 }

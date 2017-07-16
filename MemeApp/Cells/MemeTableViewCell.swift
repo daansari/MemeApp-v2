@@ -26,7 +26,7 @@ class MemeTableViewCell: UITableViewCell {
     func getAttributesForTextLabel() -> [NSAttributedStringKey: Any] {
         let memeTextAttributes:[NSAttributedStringKey:Any] = [
             NSAttributedStringKey.foregroundColor: UIColor.black,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 22)!
+            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 22)!
         ]
         return memeTextAttributes
     }
