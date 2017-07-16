@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var memeImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -33,6 +33,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         shareButton.isEnabled = false
+        
+        let memeTextAttributes:[String:Any] = [
+            NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
+            NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
+            NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSAttributedStringKey.strokeWidth.rawValue: -5
+        ]
+        
+        UITextField.configure(textfield: topTextField, text: "TOP", defaultAttributes: memeTextAttributes)
+        UITextField.configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: memeTextAttributes)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -48,15 +58,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         topTextField.delegate = self
         bottomTextField.delegate = self
         
-        let memeTextAttributes:[String:Any] = [
-            NSStrokeColorAttributeName: UIColor.black,
-            NSForegroundColorAttributeName: UIColor.white,
-            NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSStrokeWidthAttributeName: -5
-        ]
         
-        configure(textfield: topTextField, text: "TOP", defaultAttributes: memeTextAttributes)
-        configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: memeTextAttributes)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -65,18 +67,18 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //    MARK: TextField UI
-    func configure(textfield: UITextField, text: String?, defaultAttributes: [String: Any]?) {
-        if let text = text {
-            textfield.text = text
-        }
-        
-        if let defaultAttributes = defaultAttributes {
-            textfield.defaultTextAttributes = defaultAttributes
-        }
-        
-        textfield.textAlignment = .center
-        textfield.borderStyle = .none
-    }
+//    func configure(textfield: UITextField, text: String?, defaultAttributes: [String: Any]?) {
+//        if let text = text {
+//            textfield.text = text
+//        }
+//
+//        if let defaultAttributes = defaultAttributes {
+//            textfield.defaultTextAttributes = defaultAttributes
+//        }
+//
+//        textfield.textAlignment = .center
+//        textfield.borderStyle = .none
+//    }
     
 //    MARK: - IBAction
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
@@ -98,9 +100,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func shareAnImage(_ sender: Any) {
         memedImage = generateMemedImage()
-        let meme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, originalImage: originalImage!, memedImage: memedImage!)
         
-        let vc = UIActivityViewController(activityItems: [meme.memedImage], applicationActivities: [])
+        let vc = UIActivityViewController(activityItems: [memedImage!], applicationActivities: [])
         vc.completionWithItemsHandler = { (_, successful,_,_) in
             if successful {
                 self.save()
@@ -111,16 +112,17 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        shareButton.isEnabled = true
-        cancelButton.isEnabled = true
-        
-        configure(textfield: topTextField, text: "TOP", defaultAttributes: nil)
-        configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: nil)
-        originalImage = nil
-        memedImage = nil
-        memeImageView.image = nil
-        
-        shareButton.isEnabled = false
+//        shareButton.isEnabled = true
+//        cancelButton.isEnabled = true
+//
+//        configure(textfield: topTextField, text: "TOP", defaultAttributes: nil)
+//        configure(textfield: bottomTextField, text: "BOTTOM", defaultAttributes: nil)
+//        originalImage = nil
+//        memedImage = nil
+//        memeImageView.image = nil
+//
+//        shareButton.isEnabled = false
+        dismiss(animated: true, completion: nil)
     }
     
     // MARK: - Image Picker Delegate
@@ -152,13 +154,13 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     //    Move the view when keyboard covers the textfield
-    func keyboardWillShow(_ notification: Notification) {
+    @objc func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
             self.view.frame.origin.y = scrollViewOriginY - getKeyboardHeight(notification)
         }
     }
     
-    func keyboardWillHide(_ notification: Notification) {
+    @objc func keyboardWillHide(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
             self.view.frame.origin.y = scrollViewOriginY
         }
@@ -183,19 +185,28 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
 //    MARK: - Memed Image Save and Share
     func save() {
+        
+        // Add it to the memes array in the Application Delegate
+        let object = UIApplication.shared.delegate
+        let appDelegate = object as! AppDelegate
+        
+        let meme = Meme(dictionary: [Meme.TopText: topTextField.text!, Meme.BottomText: bottomTextField.text!, Meme.OriginalImage: originalImage!, Meme.MemedImage: memedImage!])
+        appDelegate.memes.addMeme(meme: meme)
+        
         UIImageWriteToSavedPhotosAlbum((self.memedImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
     }
     
-    func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
+    @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
         if let error = error {
             // we got back an error!
             let ac = UIAlertController(title: "Save error", message: error.localizedDescription, preferredStyle: .alert)
             ac.addAction(UIAlertAction(title: "OK", style: .default))
             present(ac, animated: true)
         } else {
-            let ac = UIAlertController(title: "Saved!", message: "Your altered image has been saved to your photos.", preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: "OK", style: .default))
-            present(ac, animated: true)
+//            let ac = UIAlertController(title: "Saved!", message: "Your meme has been saved to your photos.", preferredStyle: .alert)
+//            ac.addAction(UIAlertAction(title: "OK", style: .default))
+//            present(ac, animated: true)
+            dismiss(animated: true, completion: nil)
         }
     }
     
@@ -211,20 +222,6 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         self.navigationController?.setNavigationBarHidden(false, animated: true)
         toolbar.isHidden = false
         return memedImage
-    }
-    
-    struct Meme {
-        var topText: String
-        var bottomText: String
-        var originalImage: UIImage
-        var memedImage: UIImage
-        
-        init(topText: String, bottomText: String, originalImage: UIImage, memedImage: UIImage) {
-            self.topText = topText
-            self.bottomText = bottomText
-            self.originalImage = originalImage
-            self.memedImage = memedImage
-        }
     }
     
 //    MARK: - Transition Method
