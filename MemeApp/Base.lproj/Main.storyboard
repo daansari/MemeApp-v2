@@ -126,10 +126,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="Moo-tt-7GY" secondAttribute="trailing" id="7by-2p-yRV"/>
-                            <constraint firstItem="Moo-tt-7GY" firstAttribute="top" secondItem="xxY-2U-2l8" secondAttribute="bottom" id="9O5-eo-fcP"/>
-                            <constraint firstItem="Moo-tt-7GY" firstAttribute="leading" secondItem="MkD-4K-CcF" secondAttribute="leading" id="UaG-AX-q5s"/>
-                            <constraint firstItem="7uV-Lh-Z60" firstAttribute="top" secondItem="Moo-tt-7GY" secondAttribute="bottom" id="xuV-L8-s9M"/>
+                            <constraint firstItem="Moo-tt-7GY" firstAttribute="centerY" secondItem="MkD-4K-CcF" secondAttribute="centerY" id="4Gl-52-zKI"/>
+                            <constraint firstAttribute="trailing" secondItem="Moo-tt-7GY" secondAttribute="trailing" id="BuH-9x-3RM"/>
+                            <constraint firstItem="7uV-Lh-Z60" firstAttribute="top" secondItem="Moo-tt-7GY" secondAttribute="bottom" id="bjV-K3-idy"/>
+                            <constraint firstItem="Moo-tt-7GY" firstAttribute="centerX" secondItem="MkD-4K-CcF" secondAttribute="centerX" id="cQD-4t-tK3"/>
+                            <constraint firstItem="Moo-tt-7GY" firstAttribute="leading" secondItem="MkD-4K-CcF" secondAttribute="leading" id="mVY-d8-WK8"/>
+                            <constraint firstItem="Moo-tt-7GY" firstAttribute="top" secondItem="xxY-2U-2l8" secondAttribute="bottom" id="yyr-fj-fNC"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" title="Meme Detail" id="UD1-MX-ssf"/>
@@ -139,14 +141,14 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Yr1-QG-GTa" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2408.8000000000002" y="2338.3808095952027"/>
+            <point key="canvasLocation" x="2089" y="2291"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="rUq-7n-4cU">
             <objects>
                 <tabBarController id="F9D-YJ-wIT" sceneMemberID="viewController">
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
-                    <tabBar key="tabBar" contentMode="scaleToFill" id="dpl-Cr-1pD">
+                    <tabBar key="tabBar" contentMode="scaleToFill" translucent="NO" id="dpl-Cr-1pD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -165,7 +167,7 @@
             <objects>
                 <tableViewController id="285-p3-2W7" customClass="MemesTableViewController" customModule="MemeApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="oZw-ng-Za7">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
@@ -263,7 +265,7 @@
             <objects>
                 <collectionViewController id="Dla-5N-VZs" customClass="MemesCollectionViewController" customModule="MemeApp" customModuleProvider="target" sceneMemberID="viewController">
                     <collectionView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" misplaced="YES" dataMode="prototypes" id="hkO-rT-XP3">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="603"/>
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="554"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="tYS-xp-YdQ">
@@ -419,7 +421,7 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="1583" y="2338"/>
+            <point key="canvasLocation" x="1321" y="2291"/>
         </scene>
     </scenes>
     <resources>
