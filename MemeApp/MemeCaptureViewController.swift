@@ -27,7 +27,7 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     var originalImage: UIImage?
     var memedImage: UIImage?
     
-    var scrollViewOriginY: CGFloat = 0.0
+    var viewOriginY: CGFloat = 0.0
     
     let textFieldDelegate = MemeTextFieldDelegate()
 
@@ -53,34 +53,20 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        scrollViewOriginY = self.view.frame.origin.y
-        print("scrollViewOriginY - \(scrollViewOriginY)")
-        
         subscribeToKeyboardNotifications()
-        
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewOriginY = self.view.frame.origin.y
+        print("viewOriginY - \(viewOriginY)")
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         unsubscribeToKeyboardNotifications()
     }
-    
-    //    MARK: TextField UI
-//    func configure(textfield: UITextField, text: String?, defaultAttributes: [String: Any]?) {
-//        if let text = text {
-//            textfield.text = text
-//        }
-//
-//        if let defaultAttributes = defaultAttributes {
-//            textfield.defaultTextAttributes = defaultAttributes
-//        }
-//
-//        textfield.textAlignment = .center
-//        textfield.borderStyle = .none
-//    }
     
 //    MARK: - IBAction
     @IBAction func pickAnImageFromAlbum(_ sender: Any) {
@@ -146,13 +132,13 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     //    Move the view when keyboard covers the textfield
     @objc func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
-            self.view.frame.origin.y = scrollViewOriginY - getKeyboardHeight(notification)
+            self.view.frame.origin.y = viewOriginY - getKeyboardHeight(notification)
         }
     }
     
     @objc func keyboardWillHide(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
-            self.view.frame.origin.y = scrollViewOriginY
+            self.view.frame.origin.y = viewOriginY
         }
     }
     
@@ -221,7 +207,7 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     
 //    MARK: - Transition Method
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        scrollViewOriginY = self.view.frame.origin.y
+        viewOriginY = self.view.frame.origin.y
     }
 
 
