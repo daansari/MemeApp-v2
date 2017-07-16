@@ -9,7 +9,7 @@
 import UIKit
 import Foundation
 
-class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     @IBOutlet weak var memeImageView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -29,10 +29,16 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     
     var scrollViewOriginY: CGFloat = 0.0
     
+    let textFieldDelegate = MemeTextFieldDelegate()
+
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         shareButton.isEnabled = false
+        
+        topTextField.delegate = textFieldDelegate
+        bottomTextField.delegate = textFieldDelegate
         
         let memeTextAttributes:[String:Any] = [
             NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
@@ -54,10 +60,6 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         subscribeToKeyboardNotifications()
         
         cameraButton.isEnabled = UIImagePickerController.isSourceTypeAvailable(.camera)
-        
-        topTextField.delegate = self
-        bottomTextField.delegate = self
-        
         
     }
     
@@ -141,18 +143,6 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         dismiss(animated: true, completion: nil)
     }
     
-    //    MARK: - Text Field Delegate
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
-    func textFieldDidBeginEditing(_ textField: UITextField) {
-        if textField.text == "TOP" || textField.text == "BOTTOM" {
-            textField.text = ""
-        }
-    }
-    
     //    Move the view when keyboard covers the textfield
     @objc func keyboardWillShow(_ notification: Notification) {
         if bottomTextField.isFirstResponder {
@@ -193,7 +183,9 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         let meme = Meme(dictionary: [Meme.TopText: topTextField.text!, Meme.BottomText: bottomTextField.text!, Meme.OriginalImage: originalImage!, Meme.MemedImage: memedImage!])
         appDelegate.memes.addMeme(meme: meme)
         
-        UIImageWriteToSavedPhotosAlbum((self.memedImage)!, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        if let memedImage = memedImage {
+            UIImageWriteToSavedPhotosAlbum(memedImage, self, #selector(image(_:didFinishSavingWithError:contextInfo:)), nil)
+        }
     }
     
     @objc func image(_ image: UIImage, didFinishSavingWithError error: Error?, contextInfo: UnsafeRawPointer) {
@@ -213,15 +205,18 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     func generateMemedImage() -> UIImage {
         
         //        Render view to an image
-        self.navigationController?.setNavigationBarHidden(true, animated: true)
-        toolbar.isHidden = true
+        showOrHideNavBarAndToolbar(on: true)
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        toolbar.isHidden = false
+        showOrHideNavBarAndToolbar(on: false)
         return memedImage
+    }
+    
+    func showOrHideNavBarAndToolbar(on: Bool) {
+        self.navigationController?.setNavigationBarHidden(on, animated: true)
+        toolbar.isHidden = on
     }
     
 //    MARK: - Transition Method

@@ -26,13 +26,6 @@ struct Meme {
         self.originalImage = dictionary[Meme.OriginalImage]! as! UIImage
         self.memedImage = dictionary[Meme.MemedImage]! as! UIImage
     }
-    
-//    init(topText: String, bottomText: String, originalImage: UIImage, memedImage: UIImage) {
-//        self.topText = topText
-//        self.bottomText = bottomText
-//        self.originalImage = originalImage
-//        self.memedImage = memedImage
-//    }
 }
 
 class Memes {
