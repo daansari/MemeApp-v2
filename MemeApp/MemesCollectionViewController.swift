@@ -88,7 +88,6 @@ class MemesCollectionViewController: UICollectionViewController {
     }
     
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        collectionCellSize()
         collectionView?.collectionViewLayout.invalidateLayout()
     }
     
