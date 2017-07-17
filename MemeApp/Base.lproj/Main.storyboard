@@ -53,7 +53,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="BOTTOM" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="JeF-at-pyR">
                                 <rect key="frame" x="16" y="523" width="343" height="50"/>
@@ -62,7 +62,7 @@
                                 </constraints>
                                 <nil key="textColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="allCharacters"/>
                             </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -414,7 +414,7 @@
         <!--Navigation Controller-->
         <scene sceneID="1Kp-aa-iz6">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="N8P-4Z-abM" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MemeDetailNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" id="N8P-4Z-abM" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="v18-8h-vb0">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>

@@ -87,10 +87,6 @@ class MemesCollectionViewController: UICollectionViewController {
         self.navigationController?.pushViewController(detailVC, animated: true)
     }
     
-    override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
-        collectionView?.collectionViewLayout.invalidateLayout()
-    }
-    
     func collectionCellSize() {
         let space: CGFloat = 3.0
         

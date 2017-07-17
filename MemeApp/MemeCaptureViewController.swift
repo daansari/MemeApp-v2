@@ -195,11 +195,13 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         
         //        Render view to an image
         showOrHideNavBarAndToolbar(on: true)
+        topFieldConstraint.constant += 10
         UIGraphicsBeginImageContext(self.view.frame.size)
         view.drawHierarchy(in: self.view.frame, afterScreenUpdates: true)
         let memedImage:UIImage = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         showOrHideNavBarAndToolbar(on: false)
+        topFieldConstraint.constant -= 10
         return memedImage
     }
     
