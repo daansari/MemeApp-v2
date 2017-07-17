@@ -24,6 +24,9 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
     
     @IBOutlet weak var toolbar: UIToolbar!
     
+    @IBOutlet weak var topFieldConstraint: NSLayoutConstraint!
+    @IBOutlet weak var bottomFieldConstraint: NSLayoutConstraint!
+    
     var originalImage: UIImage?
     var memedImage: UIImage?
     
@@ -208,6 +211,13 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
 //    MARK: - Transition Method
     override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
         viewOriginY = self.view.frame.origin.y
+        
+        if UIDevice.current.orientation.isLandscape {
+            bottomFieldConstraint.constant = topFieldConstraint.constant
+        } else {
+            bottomFieldConstraint.constant = topFieldConstraint.constant + 20
+        }
+
     }
 
 

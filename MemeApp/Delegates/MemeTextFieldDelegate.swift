@@ -21,5 +21,10 @@ class MemeTextFieldDelegate: NSObject, UITextFieldDelegate {
             textField.text = ""
         }
     }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textField.text = textField.text?.uppercased()
+    }
+
 }
 
