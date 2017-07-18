@@ -15,23 +15,23 @@ class MemeTableViewCell: UITableViewCell {
     @IBOutlet weak var topTextLabel: UILabel!
     @IBOutlet weak var bottomTextLabel: UILabel!
     
-    func getAttributesForMemeTextLabel() -> [NSAttributedStringKey: Any] {
-        let memeTextAttributes:[NSAttributedStringKey:Any] = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 15)!
+    func getAttributesForMemeTextLabel() -> [String: Any] {
+        let memeTextAttributes:[String:Any] = [
+            NSForegroundColorAttributeName: UIColor.white,
+            NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 15)!
         ]
         return memeTextAttributes
     }
     
-    func getAttributesForTextLabel() -> [NSAttributedStringKey: Any] {
-        let memeTextAttributes:[NSAttributedStringKey:Any] = [
-            NSAttributedStringKey.foregroundColor: UIColor.black,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue", size: 22)!
+    func getAttributesForTextLabel() -> [String: Any] {
+        let memeTextAttributes:[String:Any] = [
+            NSForegroundColorAttributeName: UIColor.black,
+            NSFontAttributeName: UIFont(name: "HelveticaNeue", size: 22)!
         ]
         return memeTextAttributes
     }
     
-    func setText(label: UILabel, text: String?, memeTextAttributes: [NSAttributedStringKey: Any], textAlignment: NSTextAlignment?) {
+    func setText(label: UILabel, text: String?, memeTextAttributes: [String: Any], textAlignment: NSTextAlignment?) {
         UILabel.configure(label: label, text: text, defaultAttributes: memeTextAttributes)
         label.textAlignment = textAlignment!
     }

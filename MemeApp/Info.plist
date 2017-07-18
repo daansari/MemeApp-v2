@@ -35,10 +35,10 @@
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
 	<key>NSCameraUsageDescription</key>
-	<string>Test Message - Camera</string>
+	<string>Meme will use your camera to capture photos to be used in the app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Test Message - Album</string>
+	<string>Meme will use your photo library so as to use photos to be used in the app</string>
 	<key>NSPhotoLibraryAddUsageDescription</key>
-	<string>Add Images </string>
+	<string>Allow Meme to save photos to your Photo Library</string>
 </dict>
 </plist>

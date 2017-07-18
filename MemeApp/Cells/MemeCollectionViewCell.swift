@@ -14,15 +14,15 @@ class MemeCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var memeImageView: UIImageView!
     @IBOutlet weak var bottomTextLabel: UILabel!
     
-    func getAttributesForMemeTextLabel() -> [NSAttributedStringKey: Any] {
-        let memeTextAttributes:[NSAttributedStringKey:Any] = [
-            NSAttributedStringKey.foregroundColor: UIColor.white,
-            NSAttributedStringKey.font: UIFont(name: "HelveticaNeue-CondensedBlack", size: 15)!
+    func getAttributesForMemeTextLabel() -> [String: Any] {
+        let memeTextAttributes:[String:Any] = [
+            NSForegroundColorAttributeName: UIColor.white,
+            NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 15)!
         ]
         return memeTextAttributes
     }
     
-    func setText(label: UILabel, text: String?, memeTextAttributes: [NSAttributedStringKey: Any], textAlignment: NSTextAlignment?) {
+    func setText(label: UILabel, text: String?, memeTextAttributes: [String: Any], textAlignment: NSTextAlignment?) {
         UILabel.configure(label: label, text: text, defaultAttributes: memeTextAttributes)
         label.textAlignment = textAlignment!
     }

@@ -44,10 +44,10 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         bottomTextField.delegate = textFieldDelegate
         
         let memeTextAttributes:[String:Any] = [
-            NSAttributedStringKey.strokeColor.rawValue: UIColor.black,
-            NSAttributedStringKey.foregroundColor.rawValue: UIColor.white,
-            NSAttributedStringKey.font.rawValue: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-            NSAttributedStringKey.strokeWidth.rawValue: -5
+            NSStrokeColorAttributeName: UIColor.black,
+            NSForegroundColorAttributeName: UIColor.white,
+            NSFontAttributeName: UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSStrokeWidthAttributeName: -5
         ]
         
         UITextField.configure(textfield: topTextField, text: "TOP", defaultAttributes: memeTextAttributes)
@@ -172,6 +172,7 @@ class MemeCaptureViewController: UIViewController, UIImagePickerControllerDelega
         let meme = Meme(dictionary: [Meme.TopText: topTextField.text!, Meme.BottomText: bottomTextField.text!, Meme.OriginalImage: originalImage!, Meme.MemedImage: memedImage!])
         appDelegate.memes.addMeme(meme: meme)
 
+        dismiss(animated: true, completion: nil)
     }
     
     func generateMemedImage() -> UIImage {

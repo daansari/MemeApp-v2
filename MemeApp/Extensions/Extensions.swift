@@ -25,7 +25,7 @@ extension UITextField {
 }
 
 extension UILabel {
-    class func configure(label: UILabel, text: String?, defaultAttributes: [NSAttributedStringKey: Any]?) {
+    class func configure(label: UILabel, text: String?, defaultAttributes: [String: Any]?) {
         if let defaultAttributes = defaultAttributes {
             label.attributedText = NSAttributedString(string: text!, attributes: defaultAttributes)
         }
